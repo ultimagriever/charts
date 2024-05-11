@@ -1,0 +1,12 @@
+{{- if .Values.namespace.create }}
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: {{ include "monochart.namespace" . }}
+  labels:
+    app: {{ .Values.namespace.app }}
+    {{- include "monochart.labels" . | nindent 4 }}
+    {{- with .Values.namespace.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+{{- end }}

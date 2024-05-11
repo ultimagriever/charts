@@ -1,0 +1,27 @@
+{{- if or (and .Values.statefulset.create .Values.statefulset.pv.create) .Values.pvc.create }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ include "monochart.name" . }}-pvc
+  labels:
+    {{- include "monochart.labels" . | nindent 4 }}
+spec:
+  {{- if and .Values.statefulset.create .Values.statefulset.pv.create }}
+  {{- with .Values.statefulset.pv.accessModes }}
+  accessModes:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.statefulset.pv.size }}
+  {{- else }}
+  {{- with .Values.pvc.accessModes }}
+  accessModes:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with .Values.pvc.resources }}
+  resources:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- end }}
+{{- end }}

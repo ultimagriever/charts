@@ -1,0 +1,32 @@
+{{- if .Values.hpa.enabled }}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ include "monochart.name" . }}
+  labels:
+    {{- include "monochart.labels" . | nindent 4 }}
+spec:
+  maxReplicas: {{ .Values.hpa.maxReplicas }}
+  minReplicas: {{ .Values.hpa.minReplicas }}
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ include "monochart.name" . }}
+  metrics:
+    {{- if .Values.hpa.targetCpuUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.hpa.targetCpuUtilizationPercentage }}
+    {{- end }}
+    {{- if .Values.hpa.targetMemoryUtilizationPercentage }}
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: {{ .Values.hpa.targetMemoryUtilizationPercentage }}
+    {{- end }}
+{{- end }}

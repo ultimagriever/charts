@@ -1,0 +1,67 @@
+{{- if .Values.statefulset.create }}
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: {{ include "monochart.name" . }}
+  labels:
+    {{- include "monochart.labels" . | nindent 4 }}
+  {{- with .Values.statefulset.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "monochart.selectorLabels" . | nindent 6 }}
+  serviceName: {{ include "monochart.name" . }}
+  replicas: {{ .Values.statefulset.replicas }}
+  template:
+    metadata:
+      labels:
+        {{- include "monochart.labels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ include "monochart.name" . }}
+          image: {{ .Values.pod.image }}
+          imagePullPolicy: {{ .Values.pod.imagePullPolicy }}
+          {{- if .Values.pod.port.enabled }}
+          ports:
+            {{- toYaml .Values.pod.port.ports | nindent 12 }}
+          {{- end }}
+          {{- if .Values.pod.command.override }}
+          {{- with .Values.pod.command.cmd }}
+          command:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.pod.command.args }}
+          args:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- end }}
+          envFrom:
+            {{- toYaml .Values.pod.envFrom | nindent 12 }}
+          env:
+            {{- toYaml .Values.pod.env | nindent 12 }}
+          volumeMounts:
+            - mountPath: {{ .Values.statefulset.pv.mountPath }}
+              name: {{ include "monochart.name" . }}
+            {{- range .Values.statefulset.volumes }}
+            - mountPath: {{ .mountPath }}
+              name: {{ .name }}
+            {{- end }}
+      volumes:
+        - name: {{ include "monochart.name" . }}
+          persistentVolumeClaim:
+            claimName: {{ include "monochart.name" . }}-pvc
+        {{- range .Values.statefulset.volumes }}
+        - name: {{ .name }}
+          {{- with .persistentVolumeClaim }}
+          persistentVolumeClaim:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .configMap }}
+          configMap:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+        {{- end }}
+{{- end }}

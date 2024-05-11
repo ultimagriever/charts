@@ -1,0 +1,99 @@
+{{- if .Values.deploymentRollout.enabled }}
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "monochart.name" . }}
+  labels:
+    {{- include "monochart.labels" . | nindent 4 }}
+spec:
+  selector:
+    matchLabels:
+      {{- include "monochart.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      {{- with .Values.deploymentRollout.annotations }}
+      annotations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      labels:
+        {{- include "monochart.labels" . | nindent 8 }}
+        {{- with .Values.deploymentRollout.labels }}
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    spec:
+      terminationGracePeriodSeconds: {{ .Values.pod.terminationGracePeriodSeconds }}
+      {{- with .Values.pod.imagePullSecrets }}
+      imagePullSecrets:
+        - name: {{ include "monochart.name" . }}-pull-secret
+      {{- end }}
+      serviceAccountName: {{ include "monochart.serviceAccountName" . }}
+      securityContext:
+        {{- toYaml .Values.deploymentRollout.securityContext | nindent 8 }}
+      containers:
+        - name: {{ include "monochart.name" . }}
+          {{- with .Values.pod.securityContext }}
+          securityContext:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          image: {{ .Values.pod.image }}
+          imagePullPolicy: {{ .Values.pod.imagePullPolicy }}
+          {{- if .Values.pod.command.override }}
+          {{- with .Values.pod.command.cmd }}
+          command:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.pod.command.args }}
+          args:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- end }}
+          {{- if .Values.pod.port.enabled }}
+          ports:
+            {{- toYaml .Values.pod.port.ports | nindent 12 }}
+          {{- end }}
+          {{- with .Values.pod.livenessProbe }}
+          livenessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.pod.readinessProbe }}
+          readinessProbe:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.pod.lifecycle }}
+          lifecycle:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          resources:
+            {{- toYaml .Values.pod.resources | nindent 12 }}
+          {{- with .Values.pod.volumeMounts }}
+          volumeMounts:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.pod.env }}
+          env:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.pod.envFrom }}
+          envFrom:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+      {{- with .Values.deploymentRollout.volumes }}
+      volumes:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.deploymentRollout.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.deploymentRollout.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.deploymentRollout.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+  {{- if not .Values.hpa.enabled }}
+  replicas: {{ .Values.deploymentRollout.replicas }}
+  {{- end }}
+{{- end }}

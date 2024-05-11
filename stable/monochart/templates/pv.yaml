@@ -1,0 +1,17 @@
+{{- if and .Values.statefulset.create .Values.statefulset.pv.create }}
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: {{ include "monochart.name" . }}-pv
+  labels:
+    {{- include "monochart.labels" . | nindent 4 }}
+spec:
+  volumeMode: {{ .Values.statefulset.pv.mode }}
+  storageClassName: manual
+  hostPath:
+    path: {{ .Values.statefulset.pv.hostPath }}
+  capacity:
+    storage: {{ .Values.statefulset.pv.size }}
+  accessModes:
+    {{- toYaml .Values.statefulset.pv.accessModes | nindent 4 }}
+{{- end }}

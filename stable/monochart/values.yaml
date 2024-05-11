@@ -1,0 +1,137 @@
+name: ""
+
+namespace:
+  create: false
+  app: ""
+  environment:
+    name: ""
+  labels:
+    name: ""
+
+pvc:
+  create: false
+  name: ""
+  accessModes: []
+  resources: {}
+    # requests:
+      # storage: 1Gi
+
+configmap:
+  create: false
+  name: ""
+  data: {}
+
+deploymentRollout:
+  enabled: false
+  annotations: {}
+  labels: {}
+  replicas: 1
+  securityContext: {}
+  volumes: []
+  nodeSelector: {}
+  affinity: {}
+  tolerations: []
+
+pod:
+  imagePullSecrets: {}
+    # registry: ghcr.io
+    # username: github_username
+    # password: github_token
+    # email: your github email
+  securityContext: {}
+  image: ""
+  imagePullPolicy: IfNotPresent
+  port:
+    enabled: false
+    ports: []
+      # - containerPort: <port>
+      #   name: <port-name>
+      #   protocol: <protocol>
+  livenessProbe: {}
+  readinessProbe: {}
+  lifecycle: {}
+  resources: {}
+  volumeMounts: []
+  command:
+    override: false
+    cmd: []
+    args: []
+  env: []
+    # - name: ENV_VAR
+    #   value: value
+  envFrom: []
+    # - secretRef:
+    #   name: secret-name
+  terminationGracePeriodSeconds: 10
+
+hpa:
+  enabled: false
+  maxReplicas: 10
+  minReplicas: 1
+  targetCpuUtilizationPercentage: 80
+  targetMemoryUtilizationPercentage: 80
+
+ingress:
+  enabled: false
+  className: ""
+  annotations: {}
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  hosts:
+    - host: chart-example.local
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  serviceName: ""
+  servicePort: 80
+  tls: []
+  # - secretName: chart-example-tls
+  #   hosts:
+  #     - chart-example.local
+
+service:
+  enabled: false
+  type: ClusterIP
+  ports: []
+    # - port: 80
+    #   targetPort: http
+    #   protocol: TCP
+    #   name: http
+
+pdb:
+  enabled: false
+  annotations: {}
+  minAvailable: 50%
+
+serviceAccount:
+  create: false
+  annotations: {}
+  automount: true
+  name: ""
+
+job:
+  enabled: false
+  annotations: {}
+  labels: {}
+  securityContext: {}
+  restartPolicy: Never
+  backoffLimit: 4
+
+statefulset:
+  create: false
+  pv:
+    create: true
+    mode: Filesystem
+    hostPath: "/mnt/data"
+    size: 20Gi
+    accessModes:
+      - ReadWriteMany
+    mountPath: ""
+  annotations: {}
+  labels: {}
+  replicas: 1
+  volumes: []
+#    - mountPath: ""
+#      name: ""
+#      persistentVolumeClaim: {}
+#      configMap: {}
