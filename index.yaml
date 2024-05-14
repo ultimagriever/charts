@@ -3,7 +3,17 @@ entries:
   monochart:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-05-11T01:10:54.72321529Z"
+    created: "2024-05-14T16:49:13.696595991Z"
+    description: A Helm chart for Kubernetes
+    digest: 37ac7b355ca074a025cb3c9786698083b9dc795b433cb09cad717f7c556d208b
+    name: monochart
+    type: application
+    urls:
+    - https://countingdowninc.github.io/charts/monochart-0.1.1.tgz
+    version: 0.1.1
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-05-14T16:49:13.695798964Z"
     description: A Helm chart for Kubernetes
     digest: 83776376745b4abe25e5f9c5b00078bd5f986274f25d83ed90e84d46bc6c69f3
     name: monochart
@@ -11,4 +21,4 @@ entries:
     urls:
     - https://countingdowninc.github.io/charts/monochart-0.1.0.tgz
     version: 0.1.0
-generated: "2024-05-11T01:10:54.722496369Z"
+generated: "2024-05-14T16:49:13.693970632Z"
