@@ -34,6 +34,7 @@ deploymentRollout:
 
 imagePullSecrets:
   create: false
+  name: ""
   registry: ghcr.io
   username: ""
   password: ""
