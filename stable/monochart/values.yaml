@@ -41,6 +41,9 @@ imagePullSecrets:
   email: ""
 
 pod:
+  imagePullSecrets:
+    use: false
+    name: ""
   securityContext: {}
   image: ""
   imagePullPolicy: IfNotPresent

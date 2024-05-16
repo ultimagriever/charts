@@ -22,9 +22,9 @@ spec:
         {{- end }}
     spec:
       terminationGracePeriodSeconds: {{ .Values.pod.terminationGracePeriodSeconds }}
-      {{- with .Values.imagePullSecrets.create }}
+      {{- if .Values.pod.imagePullSecrets.use }}
       imagePullSecrets:
-        - name: {{ include "monochart.name" . }}-pull-secret
+        - name: {{ .Values.pod.imagePullSecrets.name }}
       {{- end }}
       serviceAccountName: {{ include "monochart.serviceAccountName" . }}
       securityContext:
