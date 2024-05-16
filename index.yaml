@@ -3,7 +3,17 @@ entries:
   monochart:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-05-16T14:55:47.191040122Z"
+    created: "2024-05-16T15:17:02.322065277Z"
+    description: A Helm chart for Kubernetes
+    digest: 0244d3130957572395290b263d348e854f90d942bc058599ddefe26e8b04172e
+    name: monochart
+    type: application
+    urls:
+    - https://countingdowninc.github.io/charts/monochart-0.2.3.tgz
+    version: 0.2.3
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2024-05-16T15:17:02.321490926Z"
     description: A Helm chart for Kubernetes
     digest: 223adaf987d7ba4e9dd8490a30d64810de0f01af05e88ddc84f9c5e3148fc71e
     name: monochart
@@ -13,7 +23,7 @@ entries:
     version: 0.2.2
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-05-16T14:55:47.19046363Z"
+    created: "2024-05-16T15:17:02.320863015Z"
     description: A Helm chart for Kubernetes
     digest: 66641f01f88adb042dd83fc0f48bdc37bf8ab6ae7ace418e3c525023201a44bc
     name: monochart
@@ -23,7 +33,7 @@ entries:
     version: 0.2.1
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-05-16T14:55:47.189879994Z"
+    created: "2024-05-16T15:17:02.32025926Z"
     description: A Helm chart for Kubernetes
     digest: 7cef2985d21cb39bc86a0251ef67a32d31716ffee1bbaca9b47fc2b004e79ee5
     name: monochart
@@ -33,7 +43,7 @@ entries:
     version: 0.2.0
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-05-16T14:55:47.189261724Z"
+    created: "2024-05-16T15:17:02.319698905Z"
     description: A Helm chart for Kubernetes
     digest: 37ac7b355ca074a025cb3c9786698083b9dc795b433cb09cad717f7c556d208b
     name: monochart
@@ -43,7 +53,7 @@ entries:
     version: 0.1.1
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2024-05-16T14:55:47.188694218Z"
+    created: "2024-05-16T15:17:02.31913777Z"
     description: A Helm chart for Kubernetes
     digest: 83776376745b4abe25e5f9c5b00078bd5f986274f25d83ed90e84d46bc6c69f3
     name: monochart
@@ -51,4 +61,4 @@ entries:
     urls:
     - https://countingdowninc.github.io/charts/monochart-0.1.0.tgz
     version: 0.1.0
-generated: "2024-05-16T14:55:47.187958827Z"
+generated: "2024-05-16T15:17:02.318429319Z"
