@@ -1,8 +1,17 @@
-{{- if .Values.configmap.create }}
+{{- if or .Values.configmap.create .Values.pod.env }}
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: {{ include "monochart.name" . }}
+  {{- if .Values.pod.env }}
+  name: {{ include "monochart.name" . }}-env
+  {{- else }}
+  name: {{ .Values.configmap.name | default (include "monochart.name" .) }}
+  {{- end }}
 data:
-  {{- toYaml .Values.configmap.data | nindent 2 }}
+  {{- with .Values.configmap.data }}
+  {{- toYaml . | nindent 2 }}
+  {{- end }}
+  {{- with .Values.pod.env }}
+  {{- toYaml . | nindent 2 }}
+  {{- end }}
 {{- end }}

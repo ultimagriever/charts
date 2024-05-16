@@ -22,7 +22,7 @@ spec:
         {{- end }}
     spec:
       terminationGracePeriodSeconds: {{ .Values.pod.terminationGracePeriodSeconds }}
-      {{- with .Values.pod.imagePullSecrets }}
+      {{- with .Values.imagePullSecrets.create }}
       imagePullSecrets:
         - name: {{ include "monochart.name" . }}-pull-secret
       {{- end }}
@@ -69,13 +69,15 @@ spec:
           volumeMounts:
             {{- toYaml . | nindent 12 }}
           {{- end }}
-          {{- with .Values.pod.env }}
-          env:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          {{- with .Values.pod.envFrom }}
+          {{- if or .Values.pod.env .Values.pod.envFrom }}
           envFrom:
+            {{- if .Values.pod.env }}
+            - configMapRef:
+                name: {{ include "monochart.name" . }}-env
+            {{- end }}
+            {{- with .Values.pod.envFrom }}
             {{- toYaml . | nindent 12 }}
+            {{- end }}
           {{- end }}
       {{- with .Values.deploymentRollout.volumes }}
       volumes:

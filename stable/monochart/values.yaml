@@ -32,12 +32,14 @@ deploymentRollout:
   affinity: {}
   tolerations: []
 
+imagePullSecrets:
+  create: false
+  registry: ghcr.io
+  username: ""
+  password: ""
+  email: ""
+
 pod:
-  imagePullSecrets: {}
-    # registry: ghcr.io
-    # username: github_username
-    # password: github_token
-    # email: your github email
   securityContext: {}
   image: ""
   imagePullPolicy: IfNotPresent
@@ -56,9 +58,8 @@ pod:
     override: false
     cmd: []
     args: []
-  env: []
-    # - name: ENV_VAR
-    #   value: value
+  env: {}
+    # ENV_VAR: value
   envFrom: []
     # - secretRef:
     #   name: secret-name
@@ -80,7 +81,7 @@ ingress:
   hosts:
     - host: chart-example.local
       paths:
-        - path: /
+        - path: /*
           pathType: ImplementationSpecific
   serviceName: ""
   servicePort: 80
