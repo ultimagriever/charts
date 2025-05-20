@@ -3,7 +3,17 @@ entries:
   monochart:
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-05-20T13:21:53.152474469Z"
+    created: "2025-05-20T22:19:46.361869458Z"
+    description: A Helm chart for Kubernetes
+    digest: a3334c34fe212c01e94af43aaf3d98e0f33fa30f1b7ea041923c6e3859b3d57b
+    name: monochart
+    type: application
+    urls:
+    - https://ultimagriever.github.io/charts/monochart-0.4.1.tgz
+    version: 0.4.1
+  - apiVersion: v2
+    appVersion: 1.16.0
+    created: "2025-05-20T22:19:46.361185247Z"
     description: A Helm chart for Kubernetes
     digest: 94c16afa357a7e1e2be0211168c10531c99a575ecd00e87fcf9cef5a0319b210
     name: monochart
@@ -13,7 +23,7 @@ entries:
     version: 0.4.0
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-05-20T13:21:53.151784644Z"
+    created: "2025-05-20T22:19:46.360275416Z"
     description: A Helm chart for Kubernetes
     digest: 933eddf6f3bff2bde89f3485588c562add412892111b0dcf4c4f8cae9ed71871
     name: monochart
@@ -23,7 +33,7 @@ entries:
     version: 0.3.0
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-05-20T13:21:53.151157505Z"
+    created: "2025-05-20T22:19:46.359650886Z"
     description: A Helm chart for Kubernetes
     digest: 0244d3130957572395290b263d348e854f90d942bc058599ddefe26e8b04172e
     name: monochart
@@ -33,7 +43,7 @@ entries:
     version: 0.2.3
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-05-20T13:21:53.150584598Z"
+    created: "2025-05-20T22:19:46.359033579Z"
     description: A Helm chart for Kubernetes
     digest: 223adaf987d7ba4e9dd8490a30d64810de0f01af05e88ddc84f9c5e3148fc71e
     name: monochart
@@ -43,7 +53,7 @@ entries:
     version: 0.2.2
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-05-20T13:21:53.149986633Z"
+    created: "2025-05-20T22:19:46.358404891Z"
     description: A Helm chart for Kubernetes
     digest: 66641f01f88adb042dd83fc0f48bdc37bf8ab6ae7ace418e3c525023201a44bc
     name: monochart
@@ -53,7 +63,7 @@ entries:
     version: 0.2.1
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-05-20T13:21:53.14933529Z"
+    created: "2025-05-20T22:19:46.357789377Z"
     description: A Helm chart for Kubernetes
     digest: 7cef2985d21cb39bc86a0251ef67a32d31716ffee1bbaca9b47fc2b004e79ee5
     name: monochart
@@ -63,7 +73,7 @@ entries:
     version: 0.2.0
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-05-20T13:21:53.148130882Z"
+    created: "2025-05-20T22:19:46.357165167Z"
     description: A Helm chart for Kubernetes
     digest: 37ac7b355ca074a025cb3c9786698083b9dc795b433cb09cad717f7c556d208b
     name: monochart
@@ -73,7 +83,7 @@ entries:
     version: 0.1.1
   - apiVersion: v2
     appVersion: 1.16.0
-    created: "2025-05-20T13:21:53.147268295Z"
+    created: "2025-05-20T22:19:46.355955958Z"
     description: A Helm chart for Kubernetes
     digest: 83776376745b4abe25e5f9c5b00078bd5f986274f25d83ed90e84d46bc6c69f3
     name: monochart
@@ -81,4 +91,4 @@ entries:
     urls:
     - https://ultimagriever.github.io/charts/monochart-0.1.0.tgz
     version: 0.1.0
-generated: "2025-05-20T13:21:53.146518858Z"
+generated: "2025-05-20T22:19:46.354888325Z"
