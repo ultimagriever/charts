@@ -48,12 +48,14 @@ spec:
           {{- end }}
           resources:
             {{- toYaml .Values.pod.resources | nindent 12 }}
-          {{- with .Values.pod.env }}
-          env:
-            {{- toYaml . | nindent 12 }}
-          {{- end }}
-          {{- with .Values.pod.envFrom }}
+          {{- if or .Values.pod.envFrom .Values.pod.env }}
           envFrom:
+            {{- if .Values.pod.env }}
+            - configMapRef:
+                name: {{ include "monochart.name" . }}-env
+            {{- end }}
+            {{- with .Values.pod.envFrom }}
             {{- toYaml . | nindent 12 }}
+            {{- end }}
           {{- end }}
 {{- end }}

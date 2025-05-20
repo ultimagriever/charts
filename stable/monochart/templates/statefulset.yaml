@@ -38,10 +38,16 @@ spec:
             {{- toYaml . | nindent 12 }}
           {{- end }}
           {{- end }}
+          {{- if or .Values.pod.env .Values.pod.envFrom }}
           envFrom:
-            {{- toYaml .Values.pod.envFrom | nindent 12 }}
-          env:
-            {{- toYaml .Values.pod.env | nindent 12 }}
+            {{- if .Values.pod.env }}
+            - configMapRef:
+                name: {{ include "monochart.name" . }}-env
+            {{- end }}
+            {{- with .Values.pod.envFrom }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          {{- end }}
           volumeMounts:
             - mountPath: {{ .Values.statefulset.pv.mountPath }}
               name: {{ include "monochart.name" . }}

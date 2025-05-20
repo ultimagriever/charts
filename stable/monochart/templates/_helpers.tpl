@@ -1,20 +1,14 @@
-{{/*
-Expand the name of the chart.
-*/}}
+{{/* Expand the name of the chart. */}}
 {{- define "monochart.name" -}}
 {{- default .Chart.Name .Values.name | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
-{{/*
-Create chart name and version as used by the chart label.
-*/}}
+{{/* Create chart name and version as used by the chart label. */}}
 {{- define "monochart.chart" -}}
 {{- printf "%s-%s" .Chart.Name .Chart.Version | replace "+" "_" | trunc 63 | trimSuffix "-" }}
 {{- end }}
 
-{{/*
-Common labels
-*/}}
+{{/* Set common labels */}}
 {{- define "monochart.labels" -}}
 helm.sh/chart: {{ include "monochart.chart" . }}
 {{ include "monochart.selectorLabels" . }}
@@ -24,17 +18,13 @@ app.kubernetes.io/version: {{ .Chart.AppVersion | quote }}
 app.kubernetes.io/managed-by: {{ .Release.Service }}
 {{- end }}
 
-{{/*
-Selector labels
-*/}}
+{{/* Set selector labels - used to associate certain resources */}}
 {{- define "monochart.selectorLabels" -}}
 app.kubernetes.io/name: {{ include "monochart.name" . }}
 app.kubernetes.io/instance: {{ .Release.Name }}
 {{- end }}
 
-{{/*
-Create the name of the service account to use
-*/}}
+{{/* Name to use for service account */}}
 {{- define "monochart.serviceAccountName" -}}
 {{- if .Values.serviceAccount.create }}
 {{- default (include "monochart.name" .) .Values.serviceAccount.name }}
@@ -43,21 +33,8 @@ Create the name of the service account to use
 {{- end }}
 {{- end }}
 
-{{/*
-Create the name of the PDB to use
-*/}}
-{{- define "monochart.pdbName" }}
-{{- if .Values.pdb.enabled }}
-{{- default (include "monochart.name" .) .Values.pdb.name }}
-{{- else }}
-{{- default "default" .Values.pdb.name }}
-{{- end }}
-{{- end }}
-
-{{/*
-Create the name of the namespace where resources are going to be created into.
-*/}}
-{{- define "monochart.namespace" }}
+{{/* Chart Namespace */}}
+{{- define "monochart.namespace" -}}
 {{- if .Values.namespace.create }}
 {{- printf "%s-%s" .Values.namespace.app .Values.namespace.environment.name }}
 {{- else }}
@@ -65,22 +42,18 @@ Create the name of the namespace where resources are going to be created into.
 {{- end }}
 {{- end }}
 
-{{/*
-Create the name of the ConfigMap to use
-*/}}
-{{- define "monochart.configmap" }}
-{{- if .Values.configmap.create }}
-{{- default (include "monochart.name" .) .Values.pvc.name }}
-{{- else }}
-{{- default "default" .Values.pvc.name }}
-{{- end }}
-{{- end }}
-
-{{/*
-Sets up an encoded docker config json to create a registry secret.
-*/}}
+{{/* Encoded registry secret for docker images */}}
 {{- define "monochart.registrySecret" }}
 {{- with .Values.imagePullSecrets }}
 {{- printf "{\"auths\":{\"%s\":{\"username\":\"%s\",\"password\":\"%s\",\"email\":\"%s\",\"auth\":\"%s\"}}}" .registry .username .password .email (printf "%s:%s" .username .password | b64enc) | b64enc }}
+{{- end }}
+{{- end }}
+
+{{/* Name for the PDB when enabled */}}
+{{- define "monochart.pdbName" }}
+{{- if .Values.pdb.enabled }}
+{{- default (include "monochart.name" .) .Values.pdb.name }}
+{{- else }}
+{{- default "default" .Values.pdb.name }}
 {{- end }}
 {{- end }}

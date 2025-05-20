@@ -1,37 +1,79 @@
 name: ""
 
+# Namespace variables
 namespace:
+  # When true, creates a Kubernetes namespace.
   create: false
+  # The name of the app the namespace will be created for.
   app: ""
+  # The environment for the namespace.
   environment:
     name: ""
+  # Any other labels for the namespace.
   labels:
     name: ""
 
+# PersistentVolumeClaim variables
 pvc:
+  # When true, creates a PersistentVolumeClaim
   create: false
+  # The name of the PVC
   name: ""
+  # PVC access modes, see: https://kubernetes.io/docs/concepts/storage/persistent-volumes/#access-modes
   accessModes: []
+  # PVC resource claims, see: https://kubernetes.io/docs/concepts/storage/persistent-volumes/#resources
   resources: {}
-    # requests:
-      # storage: 1Gi
 
-configmap:
+# StatefulSet variables
+statefulset:
   create: false
-  name: ""
-  data: {}
-
-deploymentRollout:
-  enabled: false
+  pv:
+    create: true
+    mode: Filesystem
+    hostPath: "/mnt/data"
+    size: 10Gi
+    accessModes:
+      - ReadWriteMany
+    mountPath: ""
   annotations: {}
   labels: {}
   replicas: 1
-  securityContext: {}
+  env: {}
   volumes: []
+    # - mountPath: ""
+    #   name: ""
+    #   persistentVolumeClaim: {}
+  #   configMap: {}
+
+# ConfigMap variables
+configmap:
+  # When true, creates a ConfigMap
+  create: false
+  name: ""
+  # The data to be stored in the ConfigMap
+  data: {}
+
+# Deployment Rollout variables
+deploymentRollout:
+  # When true, creates a Deployment
+  enabled: false
+  # Deployment annotations, see: https://kubernetes.io/docs/concepts/overview/working-with-objects/annotations/
+  annotations: {}
+  # Deployment labels
+  labels: {}
+  # Replica count
+  replicas: 1
+  # Deployment security context, see: https://kubernetes.io/docs/tasks/configure-pod-container/security-context/
+  securityContext: {}
+  # Volumes to attach to the deployment
+  volumes: []
+  # Deployment node selector and pod affinity, see: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/
   nodeSelector: {}
   affinity: {}
+  # Deployment tolerations, see: https://kubernetes.io/docs/concepts/scheduling-eviction/taint-and-toleration/
   tolerations: []
 
+# Image pull secrets, use this when a given Docker image is private
 imagePullSecrets:
   create: false
   registry: ghcr.io
@@ -39,111 +81,144 @@ imagePullSecrets:
   password: ""
   email: ""
 
+# Pod variables
 pod:
+  # Set image pull secrets for private images, see line 56
   imagePullSecrets:
     use: false
+    # The name of the secret should match the name of the application
     name: ""
+  # Pod security context
   securityContext: {}
+  # Name of the image to pull
   image: ""
+  # Image pull policy, see: https://kubernetes.io/docs/concepts/containers/images/#image-pull-policy
   imagePullPolicy: IfNotPresent
+  # Networking port to be exposed by the pod
   port:
+    # Toggles whether a pod should expose a port
     enabled: false
+    # List of ports to expose
     ports: []
-      # - containerPort: <port>
-      #   name: <port-name>
-      #   protocol: <protocol>
+    # - containerPort: <port>
+    #   name: <port-name>
+    #   protocol: <protocol>
+  # Liveness, readiness, and startup probes: https://kubernetes.io/docs/tasks/configure-pod-container/configure-liveness-readiness-startup-probes/
   livenessProbe: {}
   readinessProbe: {}
+  startupProbe: {}
+  # Pod lifecycle configuration: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/
   lifecycle: {}
+  # Resource allocation
   resources: {}
+  # Pod volume mounts
   volumeMounts: []
+  # Custom command for pod - this overrides the CMD line in the Dockerfile for the container
   command:
+    # Toggle to override command
     override: false
     cmd: []
     args: []
+  # Pod environment variables. If this is set, a ConfigMap will be created with this as the data,
+  # and it will be associated with this pod.
   env: {}
-    # ENV_VAR: value
+  # Other environment variable sources, such as from a secret or a ConfigMap not declared in the helmfile
   envFrom: []
-    # - secretRef:
-    #   name: secret-name
-  terminationGracePeriodSeconds: 10
+  # Grace period for pod termination
+  terminationGracePeriodSeconds: 30
 
+# Horizontal Pod Autoscaler
 hpa:
+  # Toggle to create an HPA
   enabled: false
   maxReplicas: 10
   minReplicas: 1
   targetCpuUtilizationPercentage: 80
   targetMemoryUtilizationPercentage: 80
 
+# Ingress Controller settings
 ingress:
+  # Toggle to enable ingress to the service
   enabled: false
-  className: ""
+  # Ingress class, see: https://kubernetes.io/docs/concepts/services-networking/ingress/#ingress-class
+  className: nginx
+  # Ingress annotations
   annotations: {}
     # kubernetes.io/ingress.class: nginx
-    # kubernetes.io/tls-acme: "true"
+  # kubernetes.io/tls-acme: "true"
+  # Ingress hostnames: https://kubernetes.io/docs/concepts/services-networking/ingress/#types-of-ingress
   hosts:
+    # Hostname for the ingress controller. Set this as a DNS record pointing
+    # to your cluster.
     - host: chart-example.local
       paths:
         - path: /*
           pathType: ImplementationSpecific
+  # Service name that the ingress points to
   serviceName: ""
+  # Service port to map ingress to
   servicePort: 80
+  # TLS configuration
   tls: []
-  # - secretName: chart-example-tls
-  #   hosts:
-  #     - chart-example.local
 
+# Service configuration
 service:
+  # When enabled, creates a Service and associates it to the deployment
   enabled: false
+  # Service type, see: https://kubernetes.io/docs/concepts/services-networking/service/#publishing-services-service-types
   type: ClusterIP
+  # Port mapping to pods
   ports: []
     # - port: 80
-    #   targetPort: http
-    #   protocol: TCP
-    #   name: http
+    #   targetPort: <port-name>
+    #   protocol: <protocol>
+  #   name: <port-mapping-name>
 
+# Pod disruption budget
 pdb:
+  # When enabled, sets a PodDisruptionBudget for the deployment
   enabled: false
+  # PDB annotations
   annotations: {}
+  # Minimum pod availability
   minAvailable: 50%
-
-serviceAccount:
-  create: false
-  annotations: {}
-  automount: true
+  # PDB name
   name: ""
 
+# Kubernetes Service Account
+serviceAccount:
+  # When set to true, creates a ServiceAccount
+  create: false
+  # ServiceAccount annotations
+  annotations: {}
+  # Toggles whether the ServiceAccount should mount automatically or not
+  automount: true
+  # ServiceAccount name
+  name: ""
+
+# One-off job executions
 job:
   enabled: false
+  # Job pod annotations
   annotations: {}
+  # Job pod labels
   labels: {}
+  # Job security context
   securityContext: {}
+  # Restart policy - should be Never
   restartPolicy: Never
+  # Backoff limit for exceptions
   backoffLimit: 4
 
-statefulset:
-  create: false
-  pv:
-    create: true
-    mode: Filesystem
-    hostPath: "/mnt/data"
-    size: 20Gi
-    accessModes:
-      - ReadWriteMany
-    mountPath: ""
-  annotations: {}
-  labels: {}
-  replicas: 1
-  volumes: []
-#    - mountPath: ""
-#      name: ""
-#      persistentVolumeClaim: {}
-#      configMap: {}
-
+# External Secrets Operator: https://external-secrets.io/latest/
 externalSecretsIo:
+  # When toggled, creates a Secret from an external secret
   create: false
+  # Set the refresh interval for ESO to pull secrets
   refreshInterval: 1h
+  # The ClusterSecretStore this should reference
   clusterSecretStoreRef: ""
+  # The name of the secret store
   name: ""
   creationPolicy: Owner
   labels: {}
